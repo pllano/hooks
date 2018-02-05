@@ -50,9 +50,12 @@ Hooks - запускает выполнение ожидающих классо�
       "render": "all",
       "routers": "none",
       "resource": "none",
-      "app": "site",
+      "app": "all",
       "state": "0",
-      "config": "none"
+      "config": {
+        "email": "1",
+        "locking": "1"
+      }
     }
   }
 }
