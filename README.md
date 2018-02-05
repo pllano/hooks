@@ -12,7 +12,36 @@ Hooks - запускает выполнение классов и передае
 Передать конфигурацию можно двумя способами:
 - Из фала [`hooks.json`](https://github.com/pllano/hooks/blob/master/src/hooks.json)
 - Массивом в конструктор `$config = [];`
-## Использование
+## Использование `GET`
+```php
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
+use Pllano\Hooks\Hook;
+ 
+$app->get('/', function (Request $request, Response $response, array $args) {
+    // Передать конфигурацию в конструктор
+    $config = [];
+    // Если передать пустой массив [] возмет конфигурацию из файла cache_config.json
+    // Передаем данные Hooks для обработки ожидающим классам
+    $hook = new Hook($config);
+    $hook->http($request, $response, $args, 'GET', 'site');
+    $request = $hook->request();
+    $args = $hook->args();
+ 
+    // Начало вашей обработки
+    $view = [];
+    $render = 'index.twig';
+    // Конец вашей обработки
+ 
+    // Передаем данные Hooks для обработки ожидающим классам
+    $hook->get($view, $render);
+    // Запись в лог
+    $this->logger->info($hook->logger());
+    // Отдаем данные шаблонизатору
+    return $this->view->render($hook->render(), $hook->view());
+});
+```
+## Использование `POST`
 ```php
 use Pllano\Hooks\Hook;
 // Скоро :)
