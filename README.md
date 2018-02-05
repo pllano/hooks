@@ -18,7 +18,7 @@ Hooks - запускает выполнение классов и передае
     "demo-hook-index-get": {
       "vendor": "\\Pllano\\Hooks\\HookIndexGet",
       "query": "GET",
-      "render": "index.html",
+      "render": "index.twig",
       "coverage": "site",
       "state": "0",
       "config": "none"
