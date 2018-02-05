@@ -27,7 +27,7 @@ class Hook
     protected $resource = null;
     protected $name_db = null;
     protected $query = null;
-    protected $coverage = null;
+    protected $app = null;
     protected $postArr = [];
     protected $postQuery = null;
     protected $id = null;
@@ -57,13 +57,13 @@ class Hook
 		return json_decode($this->path.'/hooks.json', true);
 	}
  
-    public function http(Request $request, Response $response, array $args, $query = null, $coverage = null)
+    public function http(Request $request, Response $response, array $args, $query = null, $app = null)
     {
         $this->args = $args;
         $this->request = $request;
         $this->response = $response;
         $this->query = $query;
-        $this->coverage = $coverage;
+        $this->app = $app;
         $this->set();
     }
  
@@ -139,7 +139,7 @@ class Hook
         foreach($this->config['hooks'] as $key => $value)
         {
             if (isset($value['state']) && $value['state'] == '1') {
-                if ($value['coverage'] == $this->coverage || $value['coverage'] == 'all') {
+                if ($value['app'] == $this->app || $value['app'] == 'all') {
                     if (isset($value['render']) && $value['render'] != '' && $value['render'] != ' ') {
                         if($value['query'] == $query && $value['render'] == $this->render) {
                             $hook['vendor'] = $value['vendor'];
@@ -188,9 +188,9 @@ class Hook
         return $this->query;
     }
  
-    public function coverage()
+    public function app()
     {
-        return $this->coverage;
+        return $this->app;
     }
  
     public function view()

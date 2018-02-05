@@ -1,18 +1,32 @@
 {
 	"hooks": {
 		"demo-hook-index-get": {
-			"vendor": "\\Pllano\\Hooks\\HookIndexGet",
+			"vendor": "\\ApiShop\\Hooks\\HookIndexGet",
 			"query": "GET",
 			"render": "index.html",
-			"coverage": "site",
+			"routers": "none",
+			"resource": "none",
+			"app": "site",
 			"state": "0",
 			"config": "none"
 		},
 		"demo-hook-all": {
-			"vendor": "\\Pllano\\Hooks\\HookAll",
+			"vendor": "\\ApiShop\\Hooks\\HookAll",
 			"query": "all",
 			"render": "all",
-			"coverage": "site",
+			"routers": "none",
+			"resource": "none",
+			"app": "site",
+			"state": "0",
+			"config": "none"
+		},
+		"security": {
+			"vendor": "\\Pllano\\Hooks\\Security",
+			"query": "all",
+			"render": "all",
+			"routers": "none",
+			"resource": "none",
+			"app": "site",
 			"state": "0",
 			"config": "none"
 		}
