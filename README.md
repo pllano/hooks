@@ -12,6 +12,28 @@ Hooks - запускает выполнение классов и передае
 Передать конфигурацию можно двумя способами:
 - Из фала [`hooks.json`](https://github.com/pllano/hooks/blob/master/src/hooks.json)
 - Массивом в конструктор `$config = [];`
+```json
+{
+  "hooks": {
+    "demo-hook-index-get": {
+      "vendor": "\\Pllano\\Hooks\\HookIndexGet",
+      "query": "GET",
+      "render": "index.html",
+      "coverage": "site",
+      "state": "0",
+      "config": "none"
+    },
+    "demo-hook-all": {
+      "vendor": "\\Pllano\\Hooks\\HookAll",
+      "query": "all",
+      "render": "all",
+      "coverage": "site",
+      "state": "0",
+      "config": "none"
+    }
+  }
+}
+```
 ## Использование `GET`
 ```php
 use Psr\Http\Message\ServerRequestInterface as Request;
