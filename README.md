@@ -29,8 +29,8 @@ $app->get('/', function (Request $request, Response $response, array $args) {
     $args = $hook->args();
  
     // Начало вашей обработки
-    $view = [];
-    $render = 'index.twig';
+    $view = []; // Массив для шаблонизатора
+    $render = 'index.twig'; // Название файла шаблона
     // Конец вашей обработки
  
     // Передаем данные Hooks для обработки ожидающим классам
