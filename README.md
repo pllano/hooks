@@ -10,8 +10,8 @@ Hooks - запускает выполнение классов и передае
 // Пишем
 ## Конфигурация
 Передать конфигурацию можно двумя способами:
-- Из фала [`hooks.json`](https://github.com/pllano/hooks/blob/master/src/hooks.json)
 - Массивом в конструктор `$config = [];`
+- Из фала [`hooks.json`](https://github.com/pllano/hooks/blob/master/src/hooks.json)
 ```json
 {
   "hooks": {
