@@ -1,0 +1,24 @@
+{
+	"require": [{
+			"namespace": "Pllano\\Hooks",
+			"dir": "/pllano/hooks/src",
+			"link": "https://github.com/pllano/hooks/archive/master.zip",
+			"git": "https://github.com/pllano/hooks",
+			"name": "hooks",
+			"version": "master",
+			"vendor": "pllano",
+			"state": "1",
+			"system_package": "1"
+		}, {
+			"namespace": "Psr\\Http\\Message",
+			"dir": "/psr/http-message/src",
+			"link": "https://github.com/php-fig/http-message/archive/1.0.zip",
+			"git": "https://github.com/php-fig/http-message",
+			"name": "http-message",
+			"version": "1.0",
+			"vendor": "psr",
+			"state": "1",
+			"system_package": "1"
+		}
+	]
+}
