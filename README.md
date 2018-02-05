@@ -130,7 +130,7 @@ $app->post('/post', function (Request $request, Response $response, array $args)
 });
 ```
 ## Установка
-### Composer
+### С помощью Composer
 ```json
 {
   "require": {
@@ -138,7 +138,7 @@ $app->post('/post', function (Request $request, Response $response, array $args)
   }
 }
 ```
-### [AutoRequire](https://github.com/pllano/auto-require)
+### С помощью [AutoRequire](https://github.com/pllano/auto-require)
 ```json
 {
   "require": [{
