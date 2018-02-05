@@ -43,7 +43,7 @@ Hooks - запускает выполнение ожидающих классо�
       "app": "site",
       "state": "0",
       "config": "none"
-    }
+    },
     "security": {
       "vendor": "\\Pllano\\Hooks\\Security",
       "query": "all",
