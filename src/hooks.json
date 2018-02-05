@@ -1,34 +1,37 @@
 {
 	"hooks": {
-		"demo-hook-index-get": {
-			"vendor": "\\ApiShop\\Hooks\\HookIndexGet",
-			"query": "GET",
-			"render": "index.html",
-			"routers": "none",
-			"resource": "none",
-			"app": "site",
-			"state": "0",
-			"config": "none"
-		},
-		"demo-hook-all": {
-			"vendor": "\\ApiShop\\Hooks\\HookAll",
-			"query": "all",
-			"render": "all",
-			"routers": "none",
-			"resource": "none",
-			"app": "site",
-			"state": "0",
-			"config": "none"
-		},
-		"security": {
-			"vendor": "\\Pllano\\Hooks\\Security",
-			"query": "all",
-			"render": "all",
-			"routers": "none",
-			"resource": "none",
-			"app": "site",
-			"state": "0",
-			"config": "none"
+		"print": "1",
+		"vendor": {
+			"demo-hook-index-get": {
+				"vendor": "\\Pllano\\Hooks\\HookIndexGet",
+				"query": "GET",
+				"render": "index.html",
+				"routers": "none",
+				"resource": "none",
+				"app": "site",
+				"state": "1",
+				"config": "none"
+			},
+			"demo-hook-all": {
+				"vendor": "\\Pllano\\Hooks\\HookAll",
+				"query": "all",
+				"render": "all",
+				"routers": "none",
+				"resource": "none",
+				"app": "site",
+				"state": "0",
+				"config": "none"
+			},
+			"security": {
+				"vendor": "\\Pllano\\Hooks\\Security",
+				"query": "all",
+				"render": "all",
+				"routers": "none",
+				"resource": "none",
+				"app": "site",
+				"state": "0",
+				"config": "none"
+			}
 		}
 	}
 }
