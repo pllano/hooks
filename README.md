@@ -35,6 +35,8 @@ $app->get('/', function (Request $request, Response $response, array $args) {
  
     // Передаем данные Hooks для обработки ожидающим классам
     $hook->get($view, $render);
+    // Подменяем ответ
+    $response = $hook->response();
     // Запись в лог
     $this->logger->info($hook->logger());
     // Отдаем данные шаблонизатору
@@ -43,8 +45,34 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 ```
 ## Использование `POST`
 ```php
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 use Pllano\Hooks\Hook;
-// Скоро :)
+ 
+$app->post('/post', function (Request $request, Response $response, array $args) {
+    // Передать конфигурацию в конструктор
+    $config = [];
+    // Если передать пустой массив [] возмет конфигурацию из файла cache_config.json
+    // Передаем данные Hooks для обработки ожидающим классам
+    $hook = new Hook($config);
+    $hook->http($request, $response, $args, 'POST', 'site');
+    $request = $hook->request();
+    $args = $hook->args();
+ 
+    // Начало вашей обработки
+    $callback = []; // Массив для вывода ответа
+    // Выводим заголовки
+    $response->withStatus(200);
+    $response->withHeader('Content-type', 'application/json');
+    // Конец вашей обработки
+ 
+    // Запись в лог
+    $this->logger->info($hook->logger());
+    // Подменяем ответ
+    $response = $hook->response();
+    // Выводим json
+    echo json_encode($hook->callback($callback));
+});
 ```
 ## Установка
 ### Composer
