@@ -12,22 +12,45 @@ Hooks - запускает выполнение ожидающих классо�
 Передать конфигурацию можно двумя способами:
 - Массивом в конструктор `$config = [];`
 - Из фала [`hooks.json`](https://github.com/pllano/hooks/blob/master/src/hooks.json)
+### Параметры конфигурации
+- `vendor` - Полное название класса
+- `query` - запрос при котором сработает `GET` `POST` или `all`
+- `render` - шаблон для рендера
+- `routers` - название роутера
+- `resource` - таблица или ресурс к которому происходит обращение
+- `app` - тип App - `site` `admin` - так как названия `render` могут совпадать
+- `state` - статус `0` - не активен или `1` - активен
+- `config` - индивидуальная конфигурация `{массив}` или `none`
 ```json
 {
   "hooks": {
     "demo-hook-index-get": {
-      "vendor": "\\Pllano\\Hooks\\HookIndexGet",
+      "vendor": "\\ApiShop\\Hooks\\HookIndexGet",
       "query": "GET",
-      "render": "index.twig",
-      "coverage": "site",
+      "render": "index.html",
+      "routers": "none",
+      "resource": "none",
+      "app": "site",
       "state": "0",
       "config": "none"
     },
     "demo-hook-all": {
-      "vendor": "\\Pllano\\Hooks\\HookAll",
+      "vendor": "\\ApiShop\\Hooks\\HookAll",
       "query": "all",
       "render": "all",
-      "coverage": "site",
+      "routers": "none",
+      "resource": "none",
+      "app": "site",
+      "state": "0",
+      "config": "none"
+    }
+    "security": {
+      "vendor": "\\Pllano\\Hooks\\Security",
+      "query": "all",
+      "render": "all",
+      "routers": "none",
+      "resource": "none",
+      "app": "site",
       "state": "0",
       "config": "none"
     }
