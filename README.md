@@ -1,4 +1,4 @@
-# Кеширование для вашего проекта
+# Hooks
 ## Конфигурация
 Передать конфигурацию можно двумя способами:
 - Из фала [`hooks.json`](https://github.com/pllano/hooks/blob/master/src/hooks.json)
