@@ -72,12 +72,16 @@ use Pllano\Hooks\Hook;
 $app->get('/', function (Request $request, Response $response, array $args) {
     // Передать конфигурацию в конструктор
     $config = [];
+    $query = 'GET';
+    $app = 'site';
+    $routers = null;
     // Если передать пустой массив [] возмет конфигурацию из файла hooks.json
     // Передаем данные Hooks для обработки ожидающим классам
     $hook = new Hook($config);
-    $hook->http($request, $response, $args, 'GET', 'site');
+    $hook->http($request, $response, $args, $query, $app, $routers);
     $request = $hook->request();
     $args = $hook->args();
+    $hook->setResource('user');
  
     // Начало вашей обработки
     $view = []; // Массив для шаблонизатора
