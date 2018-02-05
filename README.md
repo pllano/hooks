@@ -11,6 +11,7 @@ Hooks - запускает выполнение ожидающих классо�
 - Массивом в конструктор `$config = [];`
 - Из фала [`hooks.json`](https://github.com/pllano/hooks/blob/master/src/hooks.json)
 ### Параметры конфигурации
+- `print` - Вывести отладочную информацию `1` или выключить `0`
 - `vendor` - Полное название класса
 - `query` - запрос при котором сработает `GET` `POST` или `all`
 - `render` - шаблон для рендера
@@ -22,37 +23,37 @@ Hooks - запускает выполнение ожидающих классо�
 ```json
 {
   "hooks": {
-    "demo-hook-index-get": {
-      "vendor": "\\ApiShop\\Hooks\\HookIndexGet",
-      "query": "GET",
-      "render": "index.html",
-      "routers": "none",
-      "resource": "none",
-      "app": "site",
-      "state": "0",
-      "config": "none"
-    },
-    "demo-hook-all": {
-      "vendor": "\\ApiShop\\Hooks\\HookAll",
-      "query": "all",
-      "render": "all",
-      "routers": "none",
-      "resource": "none",
-      "app": "site",
-      "state": "0",
-      "config": "none"
-    },
-    "security": {
-      "vendor": "\\Pllano\\Hooks\\Security",
-      "query": "all",
-      "render": "all",
-      "routers": "none",
-      "resource": "none",
-      "app": "all",
-      "state": "0",
-      "config": {
-        "email": "1",
-        "locking": "1"
+    "print": "1",
+    "vendor": {
+      "demo-hook-index-get": {
+        "vendor": "\\Pllano\\Hooks\\HookIndexGet",
+        "query": "GET",
+        "render": "index.html",
+        "routers": "none",
+        "resource": "none",
+        "app": "site",
+        "state": "1",
+        "config": "none"
+      },
+      "demo-hook-all": {
+        "vendor": "\\Pllano\\Hooks\\HookAll",
+        "query": "all",
+        "render": "all",
+        "routers": "none",
+        "resource": "none",
+        "app": "site",
+        "state": "0",
+        "config": "none"
+      },
+      "security": {
+        "vendor": "\\Pllano\\Hooks\\Security",
+        "query": "all",
+        "render": "all",
+        "routers": "none",
+        "resource": "none",
+        "app": "site",
+        "state": "0",
+        "config": "none"
       }
     }
   }
