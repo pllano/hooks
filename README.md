@@ -43,7 +43,7 @@ use Pllano\Hooks\Hook;
 $app->get('/', function (Request $request, Response $response, array $args) {
     // Передать конфигурацию в конструктор
     $config = [];
-    // Если передать пустой массив [] возмет конфигурацию из файла cache_config.json
+    // Если передать пустой массив [] возмет конфигурацию из файла hooks.json
     // Передаем данные Hooks для обработки ожидающим классам
     $hook = new Hook($config);
     $hook->http($request, $response, $args, 'GET', 'site');
@@ -74,7 +74,7 @@ use Pllano\Hooks\Hook;
 $app->post('/post', function (Request $request, Response $response, array $args) {
     // Передать конфигурацию в конструктор
     $config = [];
-    // Если передать пустой массив [] возмет конфигурацию из файла cache_config.json
+    // Если передать пустой массив [] возмет конфигурацию из файла hooks.json
     // Передаем данные Hooks для обработки ожидающим классам
     $hook = new Hook($config);
     $hook->http($request, $response, $args, 'POST', 'site');
