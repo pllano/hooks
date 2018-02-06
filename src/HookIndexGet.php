@@ -23,16 +23,18 @@ class HookIndexGet {
     private $response;
     private $query = null;
     private $app = null;
+    private $routers = null;
     private $view;
     private $render;
  
-    public function http(Request $request, Response $response, array $args, $query = null, $app = null)
+    public function http(Request $request, Response $response, array $args, $query = null, $app = null, $routers = null)
     {
         $this->args = $args;
         $this->request = $request;
         $this->response = $response;
         $this->query = $query;
         $this->app = $app;
+        $this->routers = $routers;
         $this->set();
     }
  
@@ -57,7 +59,8 @@ class HookIndexGet {
     public function run()
     {
         // Обрабатываем данные
-        $this->render = '404.html';
+        // Меняем файл рендера
+        $this->render = 'hook.html';
     }
  
     public function request()
@@ -75,6 +78,16 @@ class HookIndexGet {
         return $this->args;
     }
  
+    public function view()
+    {
+        return $this->view;
+    }
+ 
+    public function render()
+    {
+        return $this->render;
+    }
+ 
     public function query()
     {
         return $this->query;
@@ -85,14 +98,9 @@ class HookIndexGet {
         return $this->app;
     }
  
-    public function view()
+    public function routers()
     {
-        return $this->view;
-    }
- 
-    public function render()
-    {
-        return $this->render;
+        return $this->routers;
     }
  
 }

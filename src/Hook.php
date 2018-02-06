@@ -22,20 +22,21 @@ class Hook
     protected $request;
     protected $response;
     protected $args;
-    protected $view = [];
-    protected $render = null;
-    protected $name_db = null;
-    protected $query = null;
-    protected $app = null;
-    protected $routers = null;
-    protected $resource = null;
-    protected $postArr = [];
-    protected $postQuery = null;
-    protected $id = null;
-    protected $callback = null;
-    protected $hooks = null;
-    protected $logger = null;
-    protected $print = null;
+    private $view = [];
+    private $render = null;
+    private $name_db = null;
+    private $query = null;
+    private $app = null;
+    private $routers = null;
+    private $resource = null;
+    private $url;
+    private $postArr = [];
+    private $postQuery = null;
+    private $id = null;
+    private $callback = null;
+    private $hooks = null;
+    private $logger = null;
+    private $print = null;
     private $path = __DIR__ . '/';
  
     function __construct($config = [])
@@ -75,13 +76,17 @@ class Hook
         $this->request = $request;
         $this->response = $response;
         $this->args = $args;
-        if(isset($query)) {
+        if(isset($query) && !empty($query)) {
             $this->query = $query;
         }
-        if(isset($app)) {
+        if(isset($app) && !empty($app)) {
             $this->app = $app;
         }
-        if(isset($routers)) {
+        $this->url = $request->getUri()->getPath();
+        if((int)$this->print == 1) {
+            print("getUri = {$this->url}<br>");
+        }
+        if(isset($routers) && !empty($routers)) {
             $this->routers = $routers;
         }
         $this->set();
@@ -99,11 +104,10 @@ class Hook
                         $hook = new $vendor();
                     } else {
                         $this->logger = "Vendor {$vendor} недоступен";
-                        //print_r($this->logger);
                         return false;
                     }
                     if(method_exists($vendor,'http')) {
-                        $hook->http($this->request, $this->response, $this->args, $this->query);
+                        $hook->http($this->request, $this->response, $this->args, $this->query, $this->app, $this->routers);
                     }
                     if(method_exists($vendor,'request')) {
                         $this->request = $hook->request();
@@ -125,8 +129,11 @@ class Hook
     public function get($view = [], $render = null)
     {
         $this->view = $view;
-        $this->render = $render;
-        $this->logger = $this->render;
+        
+        if(isset($render) && !empty($render)) {
+            $this->render = $render;
+            $this->logger = $this->render;
+        }
         $this->run();
     }
  
@@ -153,41 +160,38 @@ class Hook
     public function run()
     {
         $hooks = $this->hooks($this->query);
-        if((int)$this->print == 1) {
-            print_r($hooks);
-        }
         if(isset($hooks[0])) {
             foreach($hooks as $value)
             {
                 if(isset($value['vendor'])) {
-                    $vendor = $value['vendor'];
-                    if (class_exists($vendor)) {
-                        $hook = new $vendor();
+                    $this->vendor = $value['vendor'];
+                    if (class_exists($this->vendor)) {
+                        $hook = new $this->vendor();
                         if((int)$this->print == 1) {
-                            print("vendor = {$vendor}<br>");
+                            print("vendor = {$this->vendor}<br>");
                         }
                     } else {
-                        $this->logger = "Vendor {$vendor} недоступен";
+                        $this->logger = "{$this->vendor} недоступен";
                         if((int)$this->print == 1) {
-                            print("logger - Vendor {$vendor} недоступен<br>");
+                            print("logger = {$this->vendor} недоступен<br>");
                         }
                         return false;
                     }
                     if ($this->query == 'GET') {
-                        if(method_exists($vendor,'get')) {
+                        if(method_exists($this->vendor,'get')) {
                             $hook->get($this->view, $this->render);
                         }
-                        if(method_exists($vendor,'view')) {
+                        if(method_exists($this->vendor,'view')) {
                             $this->view = $hook->view();
                         }
-                        if(method_exists($vendor,'render')) {
+                        if(method_exists($this->vendor,'render')) {
                             $this->render = $hook->render();
                         }
                     } elseif ($this->query == 'POST') {
-                        if(method_exists($vendor,'post')) {
+                        if(method_exists($this->vendor,'post')) {
                             $hook->post($this->resource, $this->name_db, $this->postQuery, $this->postArr, $this->id);
                         }
-                        if(method_exists($vendor,'callback')) {
+                        if(method_exists($this->vendor,'callback')) {
                             $this->callback = $hook->callback($this->callback);
                         } 
                     }
@@ -199,8 +203,143 @@ class Hook
             return false;
         }
     }
- 
+    
     public function hooks($query = null)
+    {
+        $hooks = [];
+        $arr = null;
+        $key = ''; $value = '';
+        $hooks_ = '';
+ 
+        foreach($this->config['hooks']['vendor'] as $key => $value)
+        {
+            $run = false;
+            $k = ''; $v = '';
+            foreach($value as $k => $v)
+            {
+                if(isset($v) && !empty($v)) {
+                        if($v == "all"){
+                            $arr[$k] = $this->{$k};
+                        } else {
+                            $arr[$k] = $v;
+                        }
+                }
+            }
+            $hooks_[] = $arr;
+            if($hooks_['0']['state'] == 1){
+                $keys = ''; $val = '';
+                $i=0; $p=0;
+                foreach($hooks_['0'] as $keys => $val)
+                {
+                        if($keys != 'state' && $keys != 'vendor'){
+                        $i+=1;
+                        if($this->{$keys} == $val){
+                            if((int)$this->print == 1) {
+                                print("this->keys = {$this->$keys}<br>");
+                            }
+                            $p+=1;
+                        }
+                    }
+                }
+            }
+ 
+            if($i == $p) {
+                $run = true;
+                if((int)$this->print == 1) {
+                    print("i = {$i} -");
+                    print("- p = {$p}<br>");
+                    print("+++++++++<br>");
+                }
+            }
+
+            if($run === true) {
+                $hooks[] = $hooks_['0'];
+            }
+        }
+
+        return $hooks;
+ 
+    }
+ 
+    public function hooks_t__($query = null)
+    {
+        $hooks = [];
+        $hook = null;
+        foreach($this->config['hooks']['vendor'] as $key => $value)
+        {
+            $run = false;
+            if (isset($value['state']) && (int)$value['state'] == 1) {
+                if (isset($value['app'])) {
+                    if ($value['app'] == $this->app || $value['app'] == 'all' ) {
+                        if (isset($value['query'])) {
+                            if ($value['query'] == $query || $value['query'] == 'all') {
+                                if (isset($value['url']) && isset($value['render'])) {
+                                    if ($value['render'] != '' && $value['render'] != ' ' && (int)$value['render'] != 0 && $value['url'] != '' && $value['url'] != ' ' && (int)$value['url'] != 0) {
+                                    
+                                    print("{$value['url']}<br>");
+                                    print("{$this->url}<br>");
+                                    print("{$value['render']}<br>");
+                                    print("{$this->render}<br>");
+                                    
+                                    if ($value['render'] == $this->render && $value['url'] == $this->url) {
+                                        
+                                        $run = true;
+                                        if((int)$this->print == 1) {
+                                            print("true - value[render] == this->render && value[url] == this->url<br>");
+                                        }
+                                        
+                                    } elseif ($value['render'] == 'all' && $value['url'] == 'all') {
+                                        $run = true;
+                                        if((int)$this->print == 1) {
+                                            print("true - value[render] == all && value[url] == all<br>");
+                                        }
+                                    } elseif ($value['render'] == $this->render && $value['url'] == 'all') {
+                                        $run = true;
+                                        if((int)$this->print == 1) {
+                                            print("true - value[render] == this->render && value[url] == all<br>");
+                                        }
+                                    } elseif ($value['url'] == $this->url && $value['render'] == 'all') {
+                                        $run = true;
+                                        if((int)$this->print == 1) {
+                                            print("true - value[url] == this->url && value[render] == all<br>");
+                                        }
+                                    }
+                                    
+                                    }
+                                } elseif (isset($value['render'])) {
+                                if ($value['render'] != '' && $value['render'] != ' ' && (int)$value['render'] != 0 && $value['url'] == '' | $value['url'] != ' ' && (int)$value['url'] != 0) {
+                                    if ($value['render'] == $this->render || $value['render'] == 'all') {
+                                        $run = true;
+                                        if((int)$this->print == 1) {
+                                            print("true - value[render] == this->render || value[render] == all<br>");
+                                        }
+                                    }
+                                    }
+                                } elseif (isset($value['url'])) {
+                                    if ($value['url'] == $this->url || $value['url'] == 'all') {
+                                        $run = true;
+                                        if((int)$this->print == 1) {
+                                            print("true - value[url] == this->url || value[url] == all<br>");
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if($run === true) {
+                $hook['vendor'] = $value['vendor'];
+                $hook['config'] = $value;
+                $hooks[] = $hook;
+            }
+        }
+
+        return $hooks;
+ 
+    }
+ 
+    public function _hooks_($query = null)
     {
         $hooks = [];
         $hook = null;
@@ -213,29 +352,34 @@ class Hook
                         if($value['query'] == $query && $value['render'] == $this->render) {
                             $run = true;
                             if((int)$this->print == 1) {
-                                print("run = {$run} - true - 5<br>");
+                                print("true - 5<br>");
                             }
                         } elseif ($value['query'] == $query && $value['render'] == 'all') {
                             $run = true;
                             if((int)$this->print == 1) {
-                                print("run = {$run} - true - 4<br>");
+                                print("true - 4<br>");
                             }
                         } elseif ($value['query'] == 'all' && $value['render'] == 'all') {
                             $run = true;
                             if((int)$this->print == 1) {
-                                print("run = {$run} - true - 3<br>");
+                                print("true - 3<br>");
                             }
+                        }
+                    } elseif (isset($value['url']) && $value['url'] != null && $value['url'] == $this->url) {
+                        $run = true;
+                        if((int)$this->print == 1) {
+                            print("true - 9<br>");
                         }
                     } else {
                         if($value['query'] == $query) {
                             $run = true;
                             if((int)$this->print == 1) {
-                                print("run = {$run} - true - 2<br>");
+                                print("true - 2<br>");
                             }
                         } elseif ($value['query'] == 'all') {
                             $run = true;
                             if((int)$this->print == 1) {
-                                print("run = {$run} - true - 1<br>");
+                                print("true - 1<br>");
                             }
                         }
                     }
@@ -244,20 +388,14 @@ class Hook
  
             if($run === true) {
                 $hook['vendor'] = $value['vendor'];
+                if((int)$this->print == 1) {
+                    print("vendor - {$hook['vendor']}<br>");
+                }
                 $hooks[] = $hook;
             }
-        }
-        
-        if($run === true) {
-            if((int)$this->print == 1) {
-                print("run = {$run} - true - 7<br>");
-            }
-        } else {
-            if((int)$this->print == 1) {
-                print("run = {$run} - false - 8<br>");
-            }
-        }
  
+        }
+
         return $hooks;
  
     }
@@ -299,7 +437,7 @@ class Hook
  
     public function setResource($resource = null)
     {
-        if(isset($resource)) {
+        if(isset($resource) && !empty($resource)) {
             $this->resource = $resource;
         }
     }
@@ -307,6 +445,19 @@ class Hook
     public function resource()
     {
         return $this->resource;
+    }
+ 
+    public function setUrl($url = null)
+    {
+        if(isset($url) && !empty($url)) {
+            $this->url = $url;
+            $this->vendor->setUrl($url);
+        }
+    }
+ 
+    public function url()
+    {
+        return $this->url;
     }
  
     public function name_db()
