@@ -32,7 +32,7 @@ Hooks - запускает выполнение ожидающих классо�
         "render": 0,
         "routers": 0,
         "resource": 0,
-        "url": "\/contact.html",
+        "url": "all",
         "app": "site",
         "state": 1,
         "config": 0
