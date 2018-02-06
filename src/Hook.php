@@ -171,9 +171,9 @@ class Hook
                             print("vendor = {$this->vendor}<br>");
                         }
                     } else {
-                        $this->logger = "{$this->vendor} недоступен";
+                        $this->logger = "{$this->vendor} - не доступен";
                         if((int)$this->print == 1) {
-                            print("logger = {$this->vendor} недоступен<br>");
+                            print("{$this->vendor} - не доступен<br>");
                         }
                         return false;
                     }
@@ -193,7 +193,7 @@ class Hook
                         }
                         if(method_exists($this->vendor,'callback')) {
                             $this->callback = $hook->callback($this->callback);
-                        } 
+                        }
                     }
                 }
             }
@@ -210,7 +210,6 @@ class Hook
         $arr = null;
         $key = ''; $value = '';
         $hooks_ = '';
- 
         foreach($this->config['hooks']['vendor'] as $key => $value)
         {
             $run = false;
@@ -242,158 +241,15 @@ class Hook
                     }
                 }
             }
- 
             if($i == $p) {
                 $run = true;
                 if((int)$this->print == 1) {
-                    print("i = {$i} -");
-                    print("- p = {$p}<br>");
-                    print("+++++++++<br>");
+                    print("i = {$i} -- p = {$p}<br>");
                 }
             }
-
             if($run === true) {
                 $hooks[] = $hooks_['0'];
             }
-        }
-
-        return $hooks;
- 
-    }
- 
-    public function hooks_t__($query = null)
-    {
-        $hooks = [];
-        $hook = null;
-        foreach($this->config['hooks']['vendor'] as $key => $value)
-        {
-            $run = false;
-            if (isset($value['state']) && (int)$value['state'] == 1) {
-                if (isset($value['app'])) {
-                    if ($value['app'] == $this->app || $value['app'] == 'all' ) {
-                        if (isset($value['query'])) {
-                            if ($value['query'] == $query || $value['query'] == 'all') {
-                                if (isset($value['url']) && isset($value['render'])) {
-                                    if ($value['render'] != '' && $value['render'] != ' ' && (int)$value['render'] != 0 && $value['url'] != '' && $value['url'] != ' ' && (int)$value['url'] != 0) {
-                                    
-                                    print("{$value['url']}<br>");
-                                    print("{$this->url}<br>");
-                                    print("{$value['render']}<br>");
-                                    print("{$this->render}<br>");
-                                    
-                                    if ($value['render'] == $this->render && $value['url'] == $this->url) {
-                                        
-                                        $run = true;
-                                        if((int)$this->print == 1) {
-                                            print("true - value[render] == this->render && value[url] == this->url<br>");
-                                        }
-                                        
-                                    } elseif ($value['render'] == 'all' && $value['url'] == 'all') {
-                                        $run = true;
-                                        if((int)$this->print == 1) {
-                                            print("true - value[render] == all && value[url] == all<br>");
-                                        }
-                                    } elseif ($value['render'] == $this->render && $value['url'] == 'all') {
-                                        $run = true;
-                                        if((int)$this->print == 1) {
-                                            print("true - value[render] == this->render && value[url] == all<br>");
-                                        }
-                                    } elseif ($value['url'] == $this->url && $value['render'] == 'all') {
-                                        $run = true;
-                                        if((int)$this->print == 1) {
-                                            print("true - value[url] == this->url && value[render] == all<br>");
-                                        }
-                                    }
-                                    
-                                    }
-                                } elseif (isset($value['render'])) {
-                                if ($value['render'] != '' && $value['render'] != ' ' && (int)$value['render'] != 0 && $value['url'] == '' | $value['url'] != ' ' && (int)$value['url'] != 0) {
-                                    if ($value['render'] == $this->render || $value['render'] == 'all') {
-                                        $run = true;
-                                        if((int)$this->print == 1) {
-                                            print("true - value[render] == this->render || value[render] == all<br>");
-                                        }
-                                    }
-                                    }
-                                } elseif (isset($value['url'])) {
-                                    if ($value['url'] == $this->url || $value['url'] == 'all') {
-                                        $run = true;
-                                        if((int)$this->print == 1) {
-                                            print("true - value[url] == this->url || value[url] == all<br>");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if($run === true) {
-                $hook['vendor'] = $value['vendor'];
-                $hook['config'] = $value;
-                $hooks[] = $hook;
-            }
-        }
-
-        return $hooks;
- 
-    }
- 
-    public function _hooks_($query = null)
-    {
-        $hooks = [];
-        $hook = null;
-        foreach($this->config['hooks']['vendor'] as $key => $value)
-        {
-            $run = false;
-            if (isset($value['state']) && (int)$value['state'] == 1) {
-                if ($value['app'] == $this->app || $value['app'] == 'all') {
-                    if (isset($value['render']) && $value['render'] != '' && $value['render'] != ' ' && (int)$value['render'] != 0) {
-                        if($value['query'] == $query && $value['render'] == $this->render) {
-                            $run = true;
-                            if((int)$this->print == 1) {
-                                print("true - 5<br>");
-                            }
-                        } elseif ($value['query'] == $query && $value['render'] == 'all') {
-                            $run = true;
-                            if((int)$this->print == 1) {
-                                print("true - 4<br>");
-                            }
-                        } elseif ($value['query'] == 'all' && $value['render'] == 'all') {
-                            $run = true;
-                            if((int)$this->print == 1) {
-                                print("true - 3<br>");
-                            }
-                        }
-                    } elseif (isset($value['url']) && $value['url'] != null && $value['url'] == $this->url) {
-                        $run = true;
-                        if((int)$this->print == 1) {
-                            print("true - 9<br>");
-                        }
-                    } else {
-                        if($value['query'] == $query) {
-                            $run = true;
-                            if((int)$this->print == 1) {
-                                print("true - 2<br>");
-                            }
-                        } elseif ($value['query'] == 'all') {
-                            $run = true;
-                            if((int)$this->print == 1) {
-                                print("true - 1<br>");
-                            }
-                        }
-                    }
-                }
-            }
- 
-            if($run === true) {
-                $hook['vendor'] = $value['vendor'];
-                if((int)$this->print == 1) {
-                    print("vendor - {$hook['vendor']}<br>");
-                }
-                $hooks[] = $hook;
-            }
- 
         }
 
         return $hooks;
