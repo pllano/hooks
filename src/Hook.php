@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface as Response;
  
 class Hook
 {
-    private $config;
+    private $param;
     protected $request;
     protected $response;
     protected $args;
@@ -39,34 +39,34 @@ class Hook
     private $print = null;
     private $path = __DIR__ . '/';
  
-    function __construct($config = [])
+    function __construct($param = [])
     {
-        if(isset($config)) {
-            $this->config = $config;
-            if(isset($this->config['hooks']['print'])) {
-                $this->print = $this->config['hooks']['print'];
+        if(isset($param)) {
+            $this->param = $param;
+            if(isset($this->param['hooks']['print'])) {
+                $this->print = $this->param['hooks']['print'];
             }
             if((int)$this->print == 1) {
-                 print("Config из конструктора<br>");
+                 print("param из конструктора<br>");
             }
         } else {
             
-            $this->config = $this->get_config();
-            $this->print = $this->config['hooks']['print'];
+            $this->param = $this->get_param();
+            $this->print = $this->param['hooks']['print'];
             if((int)$this->print == 1) {
-                print("Config из файла hooks.json<br>");
+                print("param из файла hooks.json<br>");
             }
         }
     }
  
-    public function set_config($path = null)
+    public function set_param($path = null)
     {
         if(isset($path)) {
             $this->path = $path;
         }
     }
  
-    public function get_config()
+    public function get_param()
     {
         return json_decode($this->path.'/hooks.json', true);
     }
@@ -210,7 +210,7 @@ class Hook
         $arr = null;
         $key = ''; $value = '';
         $hooks_ = '';
-        foreach($this->config['hooks']['vendor'] as $key => $value)
+        foreach($this->param['hooks']['vendor'] as $key => $value)
         {
             $run = false;
             $k = ''; $v = '';
