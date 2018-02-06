@@ -1,5 +1,5 @@
 {
-"hooks": {
+	"hooks": {
 		"print": 1,
 		"vendor": {
 			"demo-hook-index-get": {
