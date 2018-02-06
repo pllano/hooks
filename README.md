@@ -23,41 +23,41 @@ Hooks - запускает выполнение ожидающих классо�
 - `config` - индивидуальная конфигурация `{массив}` или `0`
 ```json
 {
-  "hooks": {
-    "print": "1",
+"hooks": {
+    "print": 1,
     "vendor": {
       "demo-hook-index-get": {
         "vendor": "\\Pllano\\Hooks\\HookIndexGet",
         "query": "GET",
-        "render": "index.html",
-        "routers": "none",
+        "render": 0,
+        "routers": 0,
+        "resource": 0,
         "url": "\/contact.html",
-        "resource": "none",
         "app": "site",
-        "state": "1",
-        "config": "none"
+        "state": 1,
+        "config": 0
       },
       "demo-hook-all": {
         "vendor": "\\Pllano\\Hooks\\HookAll",
         "query": "all",
         "render": "all",
-        "routers": "none",
-        "url": "all",
-        "resource": "none",
+        "routers": 0,
+        "resource": 0,
+        "url": 0,
         "app": "site",
-        "state": "0",
-        "config": "none"
+        "state": 0,
+        "config": 0
       },
       "security": {
         "vendor": "\\Pllano\\Hooks\\Security",
         "query": "all",
         "render": "all",
-        "routers": "none",
-        "url": "all",
-        "resource": "none",
+        "routers": 0,
+        "resource": 0,
+        "url": 0,
         "app": "site",
-        "state": "0",
-        "config": "none"
+        "state": 0,
+        "config": 0
       }
     }
   }
