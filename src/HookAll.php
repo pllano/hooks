@@ -42,6 +42,11 @@ class HookAll {
         $this->set();
     }
  
+    public function state()
+    {
+        return true;
+    }
+ 
     public function set()
     {
         // Обрабатываем данные

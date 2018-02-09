@@ -38,6 +38,7 @@ class Hook
     private $logger = null;
     private $print = null;
     private $path = __DIR__ . '/';
+	private $state = true;
  
     function __construct($param = [])
     {
@@ -90,6 +91,7 @@ class Hook
             $this->routers = $routers;
         }
         $this->set();
+		
     }
  
     public function set()
@@ -108,6 +110,7 @@ class Hook
                     }
                     if(method_exists($vendor,'http')) {
                         $hook->http($this->request, $this->response, $this->args, $this->query, $this->app, $this->routers);
+						$this->state = $hook->state();
                     }
                     if(method_exists($vendor,'request')) {
                         $this->request = $hook->request();
@@ -156,6 +159,11 @@ class Hook
         }
         $this->run();
     }
+	
+    public function state()
+    {
+		return $this->state;
+	}
  
     public function run()
     {
@@ -230,7 +238,7 @@ class Hook
                 $i=0; $p=0;
                 foreach($hooks_['0'] as $keys => $val)
                 {
-                        if($keys != 'state' && $keys != 'vendor'){
+                        if($keys != 'state' && $keys != 'vendor' && $keys != 'config'){
                         $i+=1;
                         if($this->{$keys} == $val){
                             if((int)$this->print == 1) {

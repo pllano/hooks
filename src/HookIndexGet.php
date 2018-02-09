@@ -37,6 +37,11 @@ class HookIndexGet {
         $this->routers = $routers;
         $this->set();
     }
+	
+    public function state()
+    {
+        return true;
+    }
  
     public function set()
     {
