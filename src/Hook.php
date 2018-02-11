@@ -135,7 +135,6 @@ class Hook
         
         if(isset($render) && !empty($render)) {
             $this->render = $render;
-            $this->logger = $this->render;
         }
         $this->run();
     }
@@ -143,7 +142,7 @@ class Hook
     public function post($resource = null, $name_db = null, $postQuery = null, array $postArr = [], $id = null)
     {
         if(isset($resource)) {
-            $this->id = $resource;
+            $this->resource = $resource;
         }
         if(isset($name_db)) {
             $this->name_db = $name_db;
@@ -179,7 +178,7 @@ class Hook
                             print("vendor = {$this->vendor}<br>");
                         }
                     } else {
-                        $this->logger = "{$this->vendor} - не доступен";
+                        //$this->logger = "{$this->vendor} - не доступен";
                         if((int)$this->print == 1) {
                             print("{$this->vendor} - не доступен<br>");
                         }
@@ -207,7 +206,7 @@ class Hook
             }
             return true;
         } else {
-            $this->logger = $this->render;
+            //$this->logger = $this->render;
             return false;
         }
     }
