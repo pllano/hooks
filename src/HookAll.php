@@ -80,11 +80,6 @@ class HookAll {
         $this->render = '404.html';
     }
  
-    public function state()
-    {
-        return true;
-    }
- 
     public function request()
     {
         return $this->request;

@@ -213,9 +213,9 @@ class Hook
     public function hooks($query = null)
     {
         $hooks = [];
-        $arr = null;
+        $arr = [];
         $key = ''; $value = '';
-        $hooks_ = '';
+        $hook = [];
         foreach($this->param['hooks']['vendor'] as $key => $value)
         {
             $run = false;
@@ -230,11 +230,12 @@ class Hook
 					}
 				}
 			}
-            $hooks_ = $arr;
-            if($hooks_['0']['state'] == 1){
+            $hook = $arr;
+			
+            if($hook['state'] == 1){
                 $keys = ''; $val = '';
                 $i=0; $p=0;
-                foreach($hooks_['0'] as $keys => $val)
+                foreach($hook as $keys => $val)
                 {
 					if($keys != 'state' && $keys != 'vendor' && $keys != 'config'){
                         $i+=1;
@@ -254,7 +255,7 @@ class Hook
 				}
 			}
             if($run === true) {
-                $hooks[] = $hooks_['0'];
+                $hooks[] = $hook;
 			}
 		}
 		
