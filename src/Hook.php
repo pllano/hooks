@@ -230,7 +230,7 @@ class Hook
 					}
 				}
 			}
-            $hooks_[] = $arr;
+            $hooks_ = $arr;
             if($hooks_['0']['state'] == 1){
                 $keys = ''; $val = '';
                 $i=0; $p=0;
