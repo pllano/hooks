@@ -128,7 +128,7 @@ class Hook
         }
     }
     
-    public function get($view = [], $render = null)
+    public function get($render = null, $view = [])
     {
         $this->view = $view;
         
