@@ -37,7 +37,7 @@ class HookIndexGet {
         $this->routers = $routers;
         $this->set();
     }
-	
+    
     public function state()
     {
         return true;
@@ -52,8 +52,8 @@ class HookIndexGet {
         // Получаем данные отправленные нам через POST
         $postParams = $this->request->getParsedBody();
         // print_r($postParams);
-		// Получаем url
-		$url = $this->request->getUri()->getPath();
+        // Получаем url
+        $url = $this->request->getUri()->getPath();
     }
  
     public function get($view = null, $render = null)

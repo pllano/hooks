@@ -1,13 +1,13 @@
 <?php /**
-	* This file is part of the Hooks
-	*
-	* @license http://opensource.org/licenses/MIT
-	* @link https://github.com/pllano/hooks
-	* @version 1.0.1
-	* @package pllano.hooks
-	*
-	* For the full copyright and license information, please view the LICENSE
-	* file that was distributed with this source code.
+    * This file is part of the Hooks
+    *
+    * @license http://opensource.org/licenses/MIT
+    * @link https://github.com/pllano/hooks
+    * @version 1.0.1
+    * @package pllano.hooks
+    *
+    * For the full copyright and license information, please view the LICENSE
+    * file that was distributed with this source code.
 */
 
 namespace Pllano\Hooks;
@@ -38,39 +38,39 @@ class Hook
     private $print = null;
     private $path = __DIR__ . '/';
     private $state = true;
-	
+    
     function __construct($param = [])
     {
         if(isset($param)) {
             $this->param = $param;
             if(isset($this->param['hooks']['print'])) {
                 $this->print = $this->param['hooks']['print'];
-			}
+            }
             if((int)$this->print == 1) {
-				print("param из конструктора<br>");
-			}
-		} else {
+                print("param из конструктора<br>");
+            }
+        } else {
             
             $this->param = $this->get_param();
             $this->print = $this->param['hooks']['print'];
             if((int)$this->print == 1) {
                 print("param из файла hooks.json<br>");
-			}
-		}
-	}
-	
+            }
+        }
+    }
+    
     public function set_param($path = null)
     {
         if(isset($path)) {
             $this->path = $path;
-		}
-	}
-	
+        }
+    }
+    
     public function get_param()
     {
         return json_decode($this->path.'/hooks.json', true);
-	}
-	
+    }
+    
     public function http(Request $request, Response $response, array $args, $query = null, $app = null, $routers = null)
     {
         $this->request = $request;
@@ -78,21 +78,21 @@ class Hook
         $this->args = $args;
         if(isset($query) && !empty($query)) {
             $this->query = $query;
-		}
+        }
         if(isset($app) && !empty($app)) {
             $this->app = $app;
-		}
+        }
         $this->url = $request->getUri()->getPath();
         if((int)$this->print == 1) {
             print("getUri = {$this->url}<br>");
-		}
+        }
         if(isset($routers) && !empty($routers)) {
             $this->routers = $routers;
-		}
+        }
         $this->set();
         
-	}
-	
+    }
+    
     public function set()
     {
         $hooks = $this->hooks($this->query);
@@ -103,66 +103,66 @@ class Hook
                     $vendor = $value['vendor'];
                     if (class_exists($vendor)) {
                         $hook = new $vendor();
-					} else {
+                    } else {
                         $this->logger = "Vendor {$vendor} недоступен";
                         return false;
-					}
+                    }
                     if(method_exists($vendor,'http')) {
                         $hook->http($this->request, $this->response, $this->args, $this->query, $this->app, $this->routers);
                         $this->state = $hook->state();
-					}
+                    }
                     if(method_exists($vendor,'request')) {
                         $this->request = $hook->request();
-					}
+                    }
                     if(method_exists($vendor,'response')) {
                         $this->response = $hook->response();
-					}
+                    }
                     if(method_exists($vendor,'args')) {
                         $this->args = $hook->args();
-					}
-				}
-			}
+                    }
+                }
+            }
             return true;
-		} else {
+        } else {
             return false;
-		}
-	}
-	
+        }
+    }
+    
     public function get($view = [], $render = null)
     {
         $this->view = $view;
         
         if(isset($render) && !empty($render)) {
             $this->render = $render;
-		}
+        }
         $this->run();
-	}
-	
+    }
+    
     public function post($resource = null, $name_db = null, $postQuery = null, array $postArr = [], $id = null)
     {
         if(isset($resource)) {
             $this->resource = $resource;
-		}
+        }
         if(isset($name_db)) {
             $this->name_db = $name_db;
-		}
+        }
         if(isset($postQuery)) {
             $this->postQuery = $postQuery;
-		}
+        }
         if(isset($postArr)) {
             $this->postArr = $postArr;
-		}
+        }
         if(isset($id)) {
             $this->id = $id;
-		}
+        }
         $this->run();
-	}
+    }
     
     public function state()
     {
         return $this->state;
-	}
-	
+    }
+    
     public function run()
     {
         $hooks = $this->hooks($this->query);
@@ -175,40 +175,40 @@ class Hook
                         $hook = new $this->vendor();
                         if((int)$this->print == 1) {
                             print("vendor = {$this->vendor}<br>");
-						}
-					} else {
+                        }
+                    } else {
                         //$this->logger = "{$this->vendor} - не доступен";
                         if((int)$this->print == 1) {
                             print("{$this->vendor} - не доступен<br>");
-						}
+                        }
                         return false;
-					}
+                    }
                     if ($this->query == 'GET') {
                         if(method_exists($this->vendor,'get')) {
                             $hook->get($this->view, $this->render);
-						}
+                        }
                         if(method_exists($this->vendor,'view')) {
                             $this->view = $hook->view();
-						}
+                        }
                         if(method_exists($this->vendor,'render')) {
                             $this->render = $hook->render();
-						}
-						} elseif ($this->query == 'POST') {
+                        }
+                        } elseif ($this->query == 'POST') {
                         if(method_exists($this->vendor,'post')) {
                             $hook->post($this->resource, $this->name_db, $this->postQuery, $this->postArr, $this->id);
-						}
+                        }
                         if(method_exists($this->vendor,'callback')) {
                             $this->callback = $hook->callback($this->callback);
-						}
-					}
-				}
-			}
+                        }
+                    }
+                }
+            }
             return true;
-		} else {
+        } else {
             //$this->logger = $this->render;
             return false;
-		}
-	}
+        }
+    }
     
     public function hooks($query = null)
     {
@@ -223,138 +223,138 @@ class Hook
             foreach($value as $k => $v)
             {
                 if(isset($v) && !empty($v)) {
-					if($v == "all"){
-						$arr[$k] = $this->{$k};
+                    if($v == "all"){
+                        $arr[$k] = $this->{$k};
                     } else {
-						$arr[$k] = $v;
-					}
-				}
-			}
+                        $arr[$k] = $v;
+                    }
+                }
+            }
             $hook = $arr;
-			
+            
             if($hook['state'] == 1){
                 $keys = ''; $val = '';
                 $i=0; $p=0;
                 foreach($hook as $keys => $val)
                 {
-					if($keys != 'state' && $keys != 'vendor' && $keys != 'config'){
+                    if($keys != 'state' && $keys != 'vendor' && $keys != 'config'){
                         $i+=1;
                         if($this->{$keys} == $val){
                             if((int)$this->print == 1) {
                                 print("this->keys = {$this->$keys}<br>");
-							}
+                            }
                             $p+=1;
-						}
-					}
-				}
-			}
+                        }
+                    }
+                }
+            }
             if($i == $p) {
                 $run = true;
                 if((int)$this->print == 1) {
                     print("i = {$i} -- p = {$p}<br>");
-				}
-			}
+                }
+            }
             if($run === true) {
                 $hooks[] = $hook;
-			}
-		}
-		
+            }
+        }
+        
         return $hooks;
-		
-	}
-	
+        
+    }
+    
     public function request()
     {
         return $this->request;
-	}
-	
+    }
+    
     public function response()
     {
         return $this->response;
-	}
-	
+    }
+    
     public function args()
     {
         return $this->args;
-	}
-	
+    }
+    
     public function query()
     {
         return $this->query;
-	}
-	
+    }
+    
     public function app()
     {
         return $this->app;
-	}
-	
+    }
+    
     public function view()
     {
         return $this->view;
-	}
-	
+    }
+    
     public function render()
     {
         return $this->render;
-	}
-	
+    }
+    
     public function setResource($resource = null)
     {
         if(isset($resource) && !empty($resource)) {
             $this->resource = $resource;
-		}
-	}
-	
+        }
+    }
+    
     public function resource()
     {
         return $this->resource;
-	}
-	
+    }
+    
     public function setUrl($url = null)
     {
         if(isset($url) && !empty($url)) {
             $this->url = $url;
             $this->vendor->setUrl($url);
-		}
-	}
-	
+        }
+    }
+    
     public function url()
     {
         return $this->url;
-	}
-	
+    }
+    
     public function name_db()
     {
         return $this->name_db;
-	}
-	
+    }
+    
     public function postArr()
     {
         return $this->postArr;
-	}
-	
+    }
+    
     public function postQuery()
     {
         return $this->postQuery;
-	}
-	
+    }
+    
     public function id()
     {
         return $this->id;
-	}
-	
+    }
+    
     public function callback($callback = null)
     {
         if(isset($this->callback)) {
             return $this->callback;
-		} else {
+        } else {
             return $callback;
-		}
-	}
-	
+        }
+    }
+    
     public function logger()
     {
         return $this->logger;
-	}
-	
+    }
+    
 }
