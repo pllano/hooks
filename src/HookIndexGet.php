@@ -14,24 +14,20 @@
 namespace Pllano\Hooks;
  
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
  
-class HookIndexGet {
+class HookIndexGet
+{
  
-    private $args;
     private $request;
-    private $response;
     private $query = null;
     private $app = null;
     private $routers = null;
     private $view;
     private $render;
  
-    public function http(Request $request, Response $response, array $args, $query = null, $app = null, $routers = null)
+    public function http(Request $request, $query = null, $app = null, $routers = null)
     {
-        $this->args = $args;
         $this->request = $request;
-        $this->response = $response;
         $this->query = $query;
         $this->app = $app;
         $this->routers = $routers;
@@ -73,16 +69,6 @@ class HookIndexGet {
     public function request()
     {
         return $this->request;
-    }
- 
-    public function response()
-    {
-        return $this->response;
-    }
- 
-    public function args()
-    {
-        return $this->args;
     }
  
     public function view()

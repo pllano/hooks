@@ -14,13 +14,10 @@
 namespace Pllano\Hooks;
  
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
  
 class HookAll {
  
     private $request;
-    private $response;
-    private $args = [];
     private $view = [];
     private $render = null;
     private $resource = null;
@@ -32,11 +29,9 @@ class HookAll {
     private $id = null;
     private $callback = null;
  
-    public function http(Request $request, Response $response, array $args, $query = null, $app = null)
+    public function http(Request $request, $query = null, $app = null)
     {
-        $this->args = $args;
         $this->request = $request;
-        $this->response = $response;
         $this->query = $query;
         $this->app = $app;
         $this->set();
@@ -83,16 +78,6 @@ class HookAll {
     public function request()
     {
         return $this->request;
-    }
- 
-    public function response()
-    {
-        return $this->response;
-    }
- 
-    public function args()
-    {
-        return $this->args;
     }
  
     public function query()

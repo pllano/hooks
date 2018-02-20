@@ -13,14 +13,11 @@
 namespace Pllano\Hooks;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 
 class Hook
 {
     private $param;
     protected $request;
-    protected $response;
-    protected $args;
     private $view = [];
     private $render = null;
     private $name_db = null;
@@ -71,11 +68,9 @@ class Hook
         return json_decode($this->path.'/hooks.json', true);
     }
     
-    public function http(Request $request, Response $response, array $args, $query = null, $app = null, $routers = null)
+    public function http(Request $request, $query = null, $app = null, $routers = null)
     {
         $this->request = $request;
-        $this->response = $response;
-        $this->args = $args;
         if(isset($query) && !empty($query)) {
             $this->query = $query;
         }
@@ -108,17 +103,11 @@ class Hook
                         return false;
                     }
                     if(method_exists($vendor,'http')) {
-                        $hook->http($this->request, $this->response, $this->args, $this->query, $this->app, $this->routers);
+                        $hook->http($this->request, $this->query, $this->app, $this->routers);
                         $this->state = $hook->state();
                     }
                     if(method_exists($vendor,'request')) {
                         $this->request = $hook->request();
-                    }
-                    if(method_exists($vendor,'response')) {
-                        $this->response = $hook->response();
-                    }
-                    if(method_exists($vendor,'args')) {
-                        $this->args = $hook->args();
                     }
                 }
             }
@@ -267,17 +256,7 @@ class Hook
     {
         return $this->request;
     }
-    
-    public function response()
-    {
-        return $this->response;
-    }
-    
-    public function args()
-    {
-        return $this->args;
-    }
-    
+ 
     public function query()
     {
         return $this->query;
