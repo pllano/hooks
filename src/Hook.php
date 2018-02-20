@@ -322,7 +322,7 @@ class Hook
         return $this->id;
     }
     
-    public function callback($callback = null)
+    public function callback(array $callback = []): array
     {
         if(isset($this->callback)) {
             return $this->callback;
