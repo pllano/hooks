@@ -182,7 +182,7 @@ class Hook
                         if(method_exists($this->vendor,'render')) {
                             $this->render = $hook->render();
                         }
-                        } elseif ($this->query == 'POST') {
+                    } elseif ($this->query == 'POST') {
                         if(method_exists($this->vendor,'post')) {
                             $hook->post($this->resource, $this->name_db, $this->postQuery, $this->postArr, $this->id);
                         }
